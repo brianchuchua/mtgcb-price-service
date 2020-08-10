@@ -1,0 +1,10 @@
+UPDATE public."Card" SET name = 'Animate Wall', set = 'Limited Edition Alpha', "scryfallId" = 'd5c83259-9b90-47c2-b48e-c7d78519e792', "tcgplayerId" = 1029 WHERE id = 5;
+UPDATE public."Card" SET name = 'Ankh of Mishra', set = 'Limited Edition Alpha', "scryfallId" = 'f594b7aa-d44e-47c4-989b-565f881e25f1', "tcgplayerId" = 1030 WHERE id = 6;
+UPDATE public."Card" SET name = 'Armageddon', set = 'Limited Edition Alpha', "scryfallId" = '5b6ddce7-b9c5-431d-a0b0-46d4aa93cbcb', "tcgplayerId" = 1031 WHERE id = 7;
+UPDATE public."Card" SET name = 'Aspect of Wolf', set = 'Limited Edition Alpha', "scryfallId" = 'fd9ac9e6-1395-4fbd-80e2-645f0d910c29', "tcgplayerId" = 1032 WHERE id = 8;
+UPDATE public."Card" SET name = 'Bad Moon', set = 'Limited Edition Alpha', "scryfallId" = '43572906-ea74-4411-a549-5dc401591d2a', "tcgplayerId" = 1033 WHERE id = 9;
+UPDATE public."Card" SET name = 'Badlands', set = 'Limited Edition Alpha', "scryfallId" = '717f6d10-9144-4ade-9ac6-a481cc66b875', "tcgplayerId" = 91366 WHERE id = 10;
+UPDATE public."Card" SET name = 'Balance', set = 'Limited Edition Alpha', "scryfallId" = '6f9ea46a-411f-40ce-a873-a905180093f4', "tcgplayerId" = 1035 WHERE id = 11;
+UPDATE public."Card" SET name = 'Basalt Monolith', set = 'Limited Edition Alpha', "scryfallId" = '66a74c89-6f86-4ec8-af17-391cd5026054', "tcgplayerId" = 1036 WHERE id = 12;
+UPDATE public."Card" SET name = 'Bayou', set = 'Limited Edition Alpha', "scryfallId" = '412ceddd-2b9a-4551-a6bf-ae2830a2010a', "tcgplayerId" = 91367 WHERE id = 13;
+UPDATE public."Card" SET name = 'Benalish Hero', set = 'Limited Edition Alpha', "scryfallId" = '11600105-56c6-4073-a4a6-8469030b39c9', "tcgplayerId" = 1038 WHERE id = 14;

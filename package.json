@@ -1,0 +1,53 @@
+{
+  "name": "mtgcb-price-service",
+  "version": "1.0.0",
+  "description": "MTG CB's Price Service",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "start": "yarn build && node -r dotenv/config dist/index.js",
+    "dev": "nodemon --exec babel-node -r dotenv/config src/index.js",
+    "test": "yarn build && jest --setupFiles dotenv/config",
+    "serve": "node dist/index.js"
+  },
+  "author": "Brian Chuchua",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "0.19.2",
+    "bottleneck": "2.19.5",
+    "cli-progress": "3.8.2",
+    "core-js": "3.6.5",
+    "dotenv": "8.2.0",
+    "knex": "0.21.2",
+    "koa": "2.13.0",
+    "koa-route": "3.2.0",
+    "lodash": "4.17.19",
+    "moment": "2.27.0",
+    "node-cache": "5.1.2",
+    "node-cron": "2.0.3",
+    "pg": "8.3.0",
+    "regenerator-runtime": "0.13.7"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.10.5",
+    "@babel/core": "7.11.0",
+    "@babel/node": "7.10.5",
+    "@babel/preset-env": "7.11.0",
+    "@jest/globals": "26.2.0",
+    "@types/jest": "26.0.8",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.5.0",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-html": "6.0.2",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-jsx-a11y": "6.3.1",
+    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-react": "7.20.3",
+    "eslint-plugin-react-hooks": "4.0.8",
+    "jest": "26.2.2",
+    "nodemon": "2.0.4",
+    "prettier": "2.0.5"
+  }
+}
