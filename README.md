@@ -10,7 +10,7 @@ It also creates a cron job to do the above once per day.
 
 Currently, MTG CB Legacy executes a cron job to call this service once a day to receive `Price` updates.
 
-In the future, 
+In the future, this will be used by the new MTG CB experience.
 
 ## Installation
 
