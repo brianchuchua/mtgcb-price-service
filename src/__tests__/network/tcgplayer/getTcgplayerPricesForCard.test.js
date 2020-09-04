@@ -2,10 +2,6 @@ import axios from 'axios';
 import { getTcgplayerPricesForCard } from '../../../network/tcgplayer';
 import { TCGPLAYER_CARD_PRICE_PREFIX, TCGPLAYER_TOKEN } from '../../../constants/cacheKeys';
 
-// jest.mock('../../../network/tcgplayer/getTcgplayerToken', () => ({
-//   getTcgplayerToken: jest.fn(() => 'mock-token'),
-// }));
-
 jest.mock('axios', () => ({
   get: jest.fn(() => ({
     data: {

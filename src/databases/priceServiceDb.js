@@ -1,5 +1,5 @@
 import keyBy from 'lodash/keyBy';
-import { ALL_CARDS, ALL_PRICES } from '../constants/cacheKeys';
+import { ALL_CARDS, ALL_PRICES, ALL_CARDS_FROM_ID_PREFIX } from '../constants/cacheKeys';
 
 export const getConnectionToPriceServiceDatabase = async (knex) => {
   try {
@@ -32,6 +32,26 @@ export const getAllCardsFromPriceServiceDatabase = async (
       return {};
     }
   }
+  return cards;
+};
+
+export const getAllCardsFromPriceServiceDatabaseFromId = async (
+  databaseConnection,
+  cache,
+  options = { startId: 1 }
+) => {
+  const ALL_CARDS_FROM_ID = `${ALL_CARDS_FROM_ID_PREFIX}:${options.startId}`;
+
+  let cards = cache.get(ALL_CARDS_FROM_ID);
+  try {
+    cards = await databaseConnection.from('Card').where('id', '>=', options.startId);
+    cards = keyBy(cards, 'id');
+    cache.set(ALL_CARDS_FROM_ID, cards);
+  } catch (error) {
+    console.error(`[Error] Failed to getAllCardsFromPriceServiceDatabaseFromId: ${JSON.stringify(error)}`);
+    return {};
+  }
+
   return cards;
 };
 
