@@ -1,5 +1,10 @@
 import keyBy from 'lodash/keyBy';
-import { ALL_CARDS, ALL_PRICES, ALL_CARDS_FROM_ID_PREFIX } from '../constants/cacheKeys';
+import {
+  ALL_CARDS,
+  ALL_PRICES,
+  ALL_CARDS_FROM_ID_PREFIX,
+  ALL_CARDS_MISSING_TCGPLAYER_ID,
+} from '../constants/cacheKeys';
 
 export const getConnectionToPriceServiceDatabase = async (knex) => {
   try {
@@ -109,6 +114,20 @@ export const getSpecificPriceFromPriceServiceDatabase = async (
   return prices?.[id] || null;
 };
 
+export const getAllCardsMissingTcgplayerId = async (databaseConnection, cache) => {
+  let cards = cache.get(ALL_CARDS_MISSING_TCGPLAYER_ID);
+  try {
+    cards = await databaseConnection.from('Card').whereNull('tcgplayerId');
+    const TWELVE_HOURS = 12 * 60 * 60;
+    cache.set(ALL_CARDS_MISSING_TCGPLAYER_ID, cards, TWELVE_HOURS);
+  } catch (error) {
+    console.error(`[Error] Failed to getAllCardsMissingTcgplayerId: ${JSON.stringify(error)}`);
+    return {};
+  }
+
+  return cards;
+};
+
 export const upsertPriceIntoDatabase = async (price, databaseConnection) => {
   try {
     const currentPriceCount = (
@@ -130,14 +149,29 @@ export const upsertPriceIntoDatabase = async (price, databaseConnection) => {
 
 export const upsertCardIntoDatabase = async (card, databaseConnection) => {
   try {
-    const currentCardCount = (await databaseConnection.where({ id: card.id }).count().from('Card'))[0].count;
-    const currentPriceExists = currentCardCount > 0;
-    if (currentPriceExists) {
+    const currentCardInDatabase = await databaseConnection.where({ id: card.id }).from('Card');
+    const currentCardCount = currentCardInDatabase?.length || 0;
+    const cardInDatabaseAlreadyHasATcgplayerId = currentCardCount > 0 && currentCardInDatabase[0]?.tcgplayerId;
+
+    if (cardInDatabaseAlreadyHasATcgplayerId) {
+      delete card.tcgplayerId;
+    }
+
+    const currentCardExists = currentCardCount > 0;
+    if (currentCardExists) {
       await databaseConnection('Card').where({ id: card.id }).update(card);
     } else {
       await databaseConnection('Card').insert(card);
     }
   } catch (error) {
     console.error(`[Error] Failed to upsertCardIntoDatabase: ${JSON.stringify(error)}`);
+  }
+};
+
+export const updateTcgplayerIdInDatabase = async (card, databaseConnection) => {
+  try {
+    await databaseConnection('Card').where({ scryfallId: card.scryfallId, tcgplayerId: null }).update(card);
+  } catch (error) {
+    console.error(`[Error] Failed to updateTcgplayerId: ${JSON.stringify(error)}`);
   }
 };

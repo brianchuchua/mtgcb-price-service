@@ -4,7 +4,7 @@ import Koa from 'koa';
 import cron from 'node-cron';
 import bearerTokenAuth from './middleware/bearerTokenAuth';
 import { loadCardsAndPricesIntoCache, setUpRoutes } from './loaders';
-import { updateAllPrices, updateAllCardsLegacy } from './jobs';
+import { updateAllPrices, updateAllCardsLegacy, updateTcgplayerIdsFromScryfall } from './jobs';
 import { ONCE_A_DAY_AT_MIDNIGHT_PACIFIC_TIME } from './constants/cron';
 
 const MtgCbPriceService = new Koa();
@@ -22,10 +22,12 @@ const MtgCbPriceService = new Koa();
 
   cron.schedule(ONCE_A_DAY_AT_MIDNIGHT_PACIFIC_TIME, async () => {
     await updateAllCardsLegacy(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+    await updateTcgplayerIdsFromScryfall(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
     await updateAllPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
   });
 
   await updateAllCardsLegacy(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+  await updateTcgplayerIdsFromScryfall(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
   await updateAllPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
 })();
 
