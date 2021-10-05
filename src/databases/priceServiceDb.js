@@ -2,6 +2,7 @@ import keyBy from 'lodash/keyBy';
 import {
   ALL_CARDS,
   ALL_PRICES,
+  ALL_PRICES_ARRAY,
   ALL_CARDS_FROM_ID_PREFIX,
   ALL_CARDS_MISSING_TCGPLAYER_ID,
 } from '../constants/cacheKeys';
@@ -92,6 +93,35 @@ export const getAllPricesFromPriceServiceDatabase = async (
       cache.set(ALL_PRICES, prices);
     } catch (error) {
       console.error(`[Error] Failed to getAllPricesFromPriceServiceDatabase: ${JSON.stringify(error)}`);
+      return {};
+    }
+  }
+  return prices;
+};
+
+export const getAllPricesFromPriceServiceDatabaseAsArray = async (
+  databaseConnection,
+  cache,
+  options = { forceRefresh: false }
+) => {
+  let prices = cache.get(ALL_PRICES_ARRAY);
+  if (prices == null || options.forceRefresh) {
+    try {
+      prices = await databaseConnection
+        .select(
+          'Card.id as cardId',
+          'Price.tcgplayerId',
+          'Price.low',
+          'Price.average',
+          'Price.high',
+          'Price.market',
+          'Price.foil'
+        )
+        .from('Card')
+        .leftJoin('Price', 'Price.cardId', '=', 'Card.id');
+      cache.set(ALL_PRICES_ARRAY, prices);
+    } catch (error) {
+      console.error(`[Error] Failed to getAllPricesFromPriceServiceDatabaseAsArray: ${JSON.stringify(error)}`);
       return {};
     }
   }

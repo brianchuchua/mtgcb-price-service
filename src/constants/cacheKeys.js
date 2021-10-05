@@ -1,5 +1,6 @@
 export const ALL_CARDS = 'cards:all';
 export const ALL_PRICES = 'prices:all';
+export const ALL_PRICES_ARRAY = 'prices:all:array';
 
 export const ALL_CARDS_FROM_ID_PREFIX = 'cards:from_id';
 export const ALL_CARDS_MISSING_TCGPLAYER_ID = 'cards:missing_tcgplayer_id';

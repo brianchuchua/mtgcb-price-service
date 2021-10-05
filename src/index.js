@@ -4,7 +4,7 @@ import Koa from 'koa';
 import cron from 'node-cron';
 import bearerTokenAuth from './middleware/bearerTokenAuth';
 import { loadCardsAndPricesIntoCache, setUpRoutes } from './loaders';
-import { updateAllPrices, updateAllCardsLegacy, updateTcgplayerIdsFromScryfall } from './jobs';
+import { updateAllPrices, updateAllCardsLegacy, updateTcgplayerIdsFromScryfall, updateNewMtgCbApiPrices } from './jobs';
 import { ONCE_A_DAY_AT_MIDNIGHT_PACIFIC_TIME } from './constants/cron';
 
 const MtgCbPriceService = new Koa();
@@ -16,7 +16,7 @@ const MtgCbPriceService = new Koa();
 
   setUpRoutes(MtgCbPriceService);
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3001;
   MtgCbPriceService.listen(port);
   console.info(`[Info] MTG CB Price Service is now running on port ${port}`);
 
@@ -24,11 +24,17 @@ const MtgCbPriceService = new Koa();
     await updateAllCardsLegacy(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
     await updateTcgplayerIdsFromScryfall(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
     await updateAllPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+    if (process.env.NEW_MTGCB_API_IS_LIVE) {
+      await updateNewMtgCbApiPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+    }
   });
 
   await updateAllCardsLegacy(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
   await updateTcgplayerIdsFromScryfall(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
   await updateAllPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+  if (process.env.NEW_MTGCB_API_IS_LIVE) {
+    await updateNewMtgCbApiPrices(MtgCbPriceService.context.db, MtgCbPriceService.context.cache);
+  }
 })();
 
 export default MtgCbPriceService;
