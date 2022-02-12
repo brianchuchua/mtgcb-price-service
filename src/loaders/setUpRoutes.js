@@ -14,7 +14,7 @@ const setUpRoutes = (app) => {
   app.use(route.get('/health/', healthCheck));
   app.use(route.post('/jobs/prices/:startId', updatePrices));
   app.use(route.post('/jobs/cards/updateAllCardsFromLegacy', updateAllCardsFromLegacy));
-  app.use(route.post('/jobs/prices/updatePricesInMtgCbNew', updatePricesInMtgCbNew));
+  app.use(route.post('/jobs/updatePricesInMtgCbNew', updatePricesInMtgCbNew));
 };
 
 export default setUpRoutes;
