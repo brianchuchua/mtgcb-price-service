@@ -1,6 +1,6 @@
 {
   "name": "mtgcb-price-service",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "MTG CB's Price Service",
   "main": "index.js",
   "scripts": {
